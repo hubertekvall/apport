@@ -42,13 +42,9 @@ class Apport{
 				router.postRoutes.get(request.path)(request, response);
 		}
 
-
-
-		var messageLength = Std.string(Bytes.ofString("<h1>Hello, world!</h1>").length);
-		var response = "HTTP/1.1 200 OK"+"\r\n" + "Content-type: text/html" + "\r\n" + "Content-length: "+ messageLength + "\r\n\r\n" + "<h1>Hello, world!</h1>";
-		var bytes = Bytes.ofString(response);
-		conn.output.prepare(bytes.length);
-		conn.output.write(bytes);
+		var msg = response.toMessage();
+		conn.output.prepare(msg.length);
+		conn.output.write(msg);
 
 		conn.close();
 	}
@@ -70,10 +66,20 @@ class Apport{
 		var app = new Apport(3000, "127.0.0.1");
 		
 
-		app.get("/", function(request, response){
-			trace("Yolo");
+
+
+
+		app.get("/", function(request, response : Response){
+			response.write("Hello");
 		});
 
+		app.get("/about", function(request, response : Response){
+			response.write("Alright,first try!");
+		});
+
+		app.post("/", function(request, response : Response){
+			response.write("You posted me?");
+		});
 
 		app.run();
 	}

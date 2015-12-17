@@ -1,7 +1,7 @@
 package;
 
 import sys.net.Socket;
-
+import haxe.io.Bytes;
 
 class Parser{
 
@@ -44,10 +44,27 @@ class Request{
 
 
 class Response{
-	public var 
-
+	public var status : String = "200"; 
+	public var contentType : String = "text/html";
+	public var body : String = "";
 
 	public function new(){
 
+	}
+
+	public function write(?body = "", ?status = "200", ?contentType = "text/html"){
+		this.body = body;
+		this.status = status;
+		this.contentType = contentType;
+	}
+
+	public function toMessage() : haxe.io.Bytes{
+		var message = 
+		"HTTP/1.1 " + status + " OK" + "\r\n" + 
+		"Content-type: text/html" + "\r\n" +
+		"Content-length: " + Std.string(body.length) + "\r\n\r\n" +
+		body; 
+
+		return Bytes.ofString(message);	
 	}
 }
