@@ -1,17 +1,15 @@
 package;
 
 
-
+import Parser;
 
 
 class Router{
 
-	var getRoutes : Map<String, Dynamic> = new Map();
-	var postRoutes : Map<String, Dynamic> = new Map();
-
+	public var getRoutes : Map<String, Request->Response-> Void> = new Map();
+	public var postRoutes : Map<String, Request->Response-> Void> = new Map();
 
 	public function new(){
-		
-	}
 
+	}
 }
