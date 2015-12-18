@@ -1,7 +1,7 @@
-package;
+package apport.core;
 
 
-import Parser;
+import apport.core.Parser;
 
 
 class Router{

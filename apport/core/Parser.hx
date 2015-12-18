@@ -1,4 +1,4 @@
-package;
+package apport.core;
 
 import sys.net.Socket;
 import haxe.io.Bytes;
@@ -10,7 +10,6 @@ class Parser{
 
 		var request = new Request();
 		var headers = new Array<String>();
-
 		var line : String;
 
 		do{
@@ -48,9 +47,7 @@ class Response{
 	public var contentType : String = "text/html";
 	public var body : String = "";
 
-	public function new(){
-
-	}
+	public function new(){}
 
 	public function write(?body = "", ?status = "200", ?contentType = "text/html"){
 		this.body = body;

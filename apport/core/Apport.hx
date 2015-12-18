@@ -1,10 +1,13 @@
-package;
+package apport.core;
 
 import sys.net.Socket;
 import sys.net.Host;
 import haxe.io.Bytes;
-import Parser;
-import Router;
+import apport.core.Apport;
+import apport.core.Router;
+import apport.core.Parser.Response;
+import apport.core.Parser.Request;
+
 
 
 
@@ -12,10 +15,10 @@ class Apport{
 	var socket : Socket = new Socket();
 	var router : Router = new Router();
 
-	public function new(?port : Int = 80, ?addr : String = "0.0.0.0"){
-	
+	public function new(?port : Int = 80, ?addr : String = "0.0.0.0", ?blocking = false){
 		socket.bind(new Host(addr), port);
 		socket.listen(4);
+		socket.setBlocking(blocking);
 	}
 
 
@@ -23,9 +26,7 @@ class Apport{
 
 		// Get connection; return if the socket is null 
 		var conn = socket.accept();
-		if(conn == null){ return; }
-
-
+		if (conn == null) { trace("hello"); return; }
 
 		// Parse the request
 		var request = Parser.parse(conn);
@@ -61,28 +62,6 @@ class Apport{
 
 
 
-
-	public static function main(){
-		var app = new Apport(3000, "127.0.0.1");
-		
-
-
-
-
-		app.get("/", function(request, response : Response){
-			response.write("Hello");
-		});
-
-		app.get("/about", function(request, response : Response){
-			response.write("Alright,first try!");
-		});
-
-		app.post("/", function(request, response : Response){
-			response.write("You posted me?");
-		});
-
-		app.run();
-	}
 
 
 }

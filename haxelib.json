@@ -1,0 +1,9 @@
+{
+	"name": "apport",
+	"license": "MIT",
+	"description": "Micro web-framework for the Haxe programming language",
+	"version": "0.0.1",
+	"releasenote": "",
+	"contributors": [ "Hubert Ekvall" ],
+	
+}
