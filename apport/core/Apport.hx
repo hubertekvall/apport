@@ -26,7 +26,7 @@ class Apport{
 
 		// Get connection; return if the socket is null 
 		var conn = socket.accept();
-		if (conn == null) { trace("hello"); return; }
+		if (conn == null) {  return; }
 
 		// Parse the request
 		var request = Parser.parse(conn);
