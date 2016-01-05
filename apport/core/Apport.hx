@@ -5,8 +5,8 @@ import sys.net.Host;
 import haxe.io.Bytes;
 import apport.core.Apport;
 import apport.core.Router;
-import apport.core.Parser.Response;
-import apport.core.Parser.Request;
+import apport.core.MessageHandler;
+import apport.core.MessageHandler;
 
 
 
@@ -25,39 +25,42 @@ class Apport{
 	public function run() : Void{
 
 		// Get connection; return if the socket is null 
+		
 		var conn = socket.accept();
 		if (conn == null) {  return; }
-
+		
+		
 		// Parse the request
-		var request = Parser.parse(conn);
+		var request = MessageHandler.readRequest(conn);
 
 		// Generate a new response object that we will pass to the routehandler
 		var response = new Response();
 
 		// Find the route and send the request and response
-		switch(request.type){
-			case "GET":
-				router.getRoutes.get(request.path)(request, response);
+		var route = router.findRoute(request.method, request.path);
+		request.route = route;
+		route.fun(request, response);
 
-			case "POST":
-				router.postRoutes.get(request.path)(request, response);
-		}
-
-		var msg = response.toMessage();
-		conn.output.prepare(msg.length);
-		conn.output.write(msg);
+		response.compose();
+		MessageHandler.sendMessage(response, conn);
 
 		conn.close();
 	}
 
 
 
-	public function get(id : String, fun : Dynamic){
-		router.getRoutes.set(id, fun);
+	public function post(path : String, fun : Dynamic) {
+		router.addRoute("POST", path, fun);
 	}
 
-	public function post(id : String, fun : Dynamic){
-		router.postRoutes.set(id, fun);
+
+	public function get(path : String, fun : Dynamic){
+		router.addRoute("GET", path, fun);
+	}
+	
+	
+	public function error(fun : Dynamic){
+		router.errorHandler = fun;
 	}
 
 
