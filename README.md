@@ -1,3 +1,5 @@
+# Development on this project is currently abandoned.
+
 # apport
 Haxe micro web-framework
 
